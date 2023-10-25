@@ -1,4 +1,7 @@
-import React, { Fragment } from 'react';
+/* IMPORTARCIONES DE REACT */
+// useState - Es par usar los Hooks
+
+import React, { useState } from 'react';
 
 /* COMPONENTES DE REACT NATIVE */
 // SafeAreaView - posiciona todo el contenido del aplicativo adecuadamente en la pantalla
@@ -9,24 +12,25 @@ import React, { Fragment } from 'react';
 // Pressable - Es igual que el Button pero es mejor al soportar mas eventos
 // Image -
 // Alert - 
-// ScrollView
+// ScrollView - Poder navegar mas abajo, como agregar un scroll en la web
 // FlatList - 
 // Modal - 
 // Picker - 
+// Modal - Es para abrir una ventana emergente
 import {
   SafeAreaView,
   Text,
-  View,
   StyleSheet,
-  Button,
-  Pressable
+  Pressable,
+  Modal
 } from 'react-native';
+
+import Formulario from './src/components/Formulario';
 
 const App = () => {
 
-  const nuevaCitaHandler = () => {
-    console.log('Diste Click')
-  }
+  // Los Hooks se colocan en la parte superior, antes de toda función
+  const [modalVisible, setModalVisible] = useState(false)
 
   return (
     <SafeAreaView style={styles.contenedor}>
@@ -36,10 +40,18 @@ const App = () => {
       </Text>
 
       <Pressable
-        onPress={ nuevaCitaHandler }
+        style={styles.btnNuevaCita}
+        onPress={() => setModalVisible(true)}
       >
-        <Text>Nueva Cita</Text>
+        <Text
+          style={styles.btnTextoNuevaCita}
+        >Nueva Cita</Text>
       </Pressable>
+
+      {/* Aqui llamamos al formulario desde import y creamos props para enviar variables o funciones*/}
+      <Formulario
+        modalVisible={modalVisible}
+      />
     </SafeAreaView>
   );
 };
@@ -58,6 +70,20 @@ const styles = StyleSheet.create({
   tituloBold: {
     fontWeight: '900',
     color: '#6D28D9'
+  },
+  btnNuevaCita: {
+    backgroundColor: '#6d28d9',
+    padding: 15,
+    marginTop: 30,
+    marginHorizontal: 20,
+    borderRadius: 10
+  },
+  btnTextoNuevaCita: {
+    textAlign: 'center',
+    color: '#FFF',
+    fontSize: 20,
+    fontWeight: '900',
+    textTransform: 'uppercase'
   }
 });
 
