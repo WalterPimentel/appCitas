@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 import {
     Modal,
@@ -10,7 +10,17 @@ import {
     View
 } from 'react-native'
 
-const Formulario = ({ modalVisible }) => {
+import DatePicker from 'react-native-date-picker'
+
+const Formulario = ({ modalVisible }: { modalVisible: boolean }) => {
+
+    const [paciente, setPaciente]       = useState('')
+    const [propietario, setPropietario] = useState('')
+    const [email, setEmail]             = useState('')
+    const [telefono, setTelefono]       = useState('')
+    const [fecha, setFecha]             = useState(new Date())
+    const [sintomas, setSintomas]       = useState('')
+
     return (
         <Modal
             animationType='slide'
@@ -32,6 +42,8 @@ const Formulario = ({ modalVisible }) => {
                             style={styles.input}
                             placeholder='Nombre Mascota'
                             placeholderTextColor={'#666'}
+                            value={paciente}
+                            onChangeText={setPaciente}
                         />
                     </View>
 
@@ -41,6 +53,8 @@ const Formulario = ({ modalVisible }) => {
                             style={styles.input}
                             placeholder='Nombre Propietario'
                             placeholderTextColor={'#666'}
+                            value={propietario}
+                            onChangeText={setPropietario}
                         />
                     </View>
 
@@ -51,6 +65,8 @@ const Formulario = ({ modalVisible }) => {
                             style={styles.input}
                             placeholder='@Email Propietario'
                             placeholderTextColor={'#666'}
+                            value={email}
+                            onChangeText={setEmail}
                         />
                     </View>
 
@@ -61,18 +77,37 @@ const Formulario = ({ modalVisible }) => {
                             style={styles.input}
                             placeholder='Teléfono Propietario'
                             placeholderTextColor={'#666'}
+                            value={telefono}
+                            onChangeText={setTelefono}
+                            maxLength={9}
                         />
                     </View>
 
                     <View style={styles.campo}>
+                        <Text style={styles.label}>Fecha Alta</Text>
+                        <View style={styles.contenedorFecha}>
+                            <DatePicker
+                                date={fecha}
+                                locale='es'
+                                mode='date'
+                                onDateChange={(date) => setFecha(date)}                                
+                            />
+                        </View>
+                    </View>
+
+                    <View style={styles.campo}>
                         <Text style={styles.label}>Síntomas</Text>
-                        <TextInput
-                            keyboardType='number-pad'
-                            style={styles.input}
+                        <TextInput                            
+                            style={[styles.input, styles.sintomasInput]}
                             placeholder='Describa Algunos Síntomas de la Mascota'
                             placeholderTextColor={'#666'}
+                            value={sintomas}
+                            onChangeText={setSintomas}
+                            multiline={true}
+                            numberOfLines={4}
                         />
                     </View>
+
                 </ScrollView>
             </SafeAreaView>
         </Modal>
@@ -95,7 +130,7 @@ const styles = StyleSheet.create({
         fontWeight: '900'
     },
     campo: {
-        marginTop: 10,
+        marginVertical: 5,
         marginHorizontal: 30
     },
     label: {
@@ -108,6 +143,13 @@ const styles = StyleSheet.create({
     input: {
         backgroundColor: '#FFF',
         padding: 15,
+        borderRadius: 10
+    },
+    sintomasInput: {
+        height: 100
+    },
+    contenedorFecha: {
+        backgroundColor: '#FFF',
         borderRadius: 10
     }
 })

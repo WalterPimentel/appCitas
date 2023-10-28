@@ -14,15 +14,14 @@ import React, { useState } from 'react';
 // Alert - 
 // ScrollView - Poder navegar mas abajo, como agregar un scroll en la web
 // FlatList - 
-// Modal - 
-// Picker - 
 // Modal - Es para abrir una ventana emergente
+// Picker - 
+
 import {
   SafeAreaView,
   Text,
   StyleSheet,
-  Pressable,
-  Modal
+  Pressable
 } from 'react-native';
 
 import Formulario from './src/components/Formulario';
