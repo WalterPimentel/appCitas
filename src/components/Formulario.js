@@ -1,25 +1,67 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
 import {
     Modal,
+    Pressable,
     SafeAreaView,
     ScrollView,
     StyleSheet,
     Text,
     TextInput,
-    View
+    View,
+    Alert
 } from 'react-native'
 
 import DatePicker from 'react-native-date-picker'
 
-const Formulario = ({ modalVisible }: { modalVisible: boolean }) => {
+const Formulario = ({ modalVisible, setModalVisible, setMascotas, mascotas }) => {
 
-    const [paciente, setPaciente]       = useState('')
+    const [mascota, setMascota] = useState('')
     const [propietario, setPropietario] = useState('')
-    const [email, setEmail]             = useState('')
-    const [telefono, setTelefono]       = useState('')
-    const [fecha, setFecha]             = useState(new Date())
-    const [sintomas, setSintomas]       = useState('')
+    const [email, setEmail] = useState('')
+    const [telefono, setTelefono] = useState('')
+    const [fecha, setFecha] = useState(new Date())
+    const [sintomas, setSintomas] = useState('')
+
+    const handleCita = () => {
+        // Validaciones
+        if ([mascota, propietario, email, telefono, fecha, sintomas].includes('')) {
+            Alert.alert(
+                'Lo sentimos', // Títitulo
+                'Todos los campos son obligatorios.', // Descripción
+
+                // [{text: 'Aceptar', styles: 'default'}] Botón OK (biene por defecto en alert)
+
+                // [{text: 'Cancelar', style: 'cancel'},
+                // {text: 'Aceptar', style: 'default'}] Botónes Cancelar y OK (Respetar orden)
+
+                // [{text: 'Recordarme después'},
+                // {text: 'Cancelar', style: 'cancel'},
+                // {text: 'Aceptar', style: 'default'}] Botónes Neutral, Cancelar y OK (Respetar orden)
+            )
+
+            return
+        }
+
+        const nuevaMasctoa = {
+            mascota,
+            propietario,
+            email,
+            telefono,
+            fecha,
+            sintomas
+        }
+
+        setMascotas([...mascotas, nuevaMasctoa])
+        setModalVisible(!modalVisible)
+
+        setMascota('')
+        setPropietario('')
+        setEmail('')
+        setTelefono('')
+        setFecha(new Date())
+        setSintomas('')
+    }
 
     return (
         <Modal
@@ -36,14 +78,26 @@ const Formulario = ({ modalVisible }: { modalVisible: boolean }) => {
                         >Cita</Text>
                     </Text>
 
+                    <Pressable
+                        style={styles.btnCancelar}
+                        onLongPress={() => setModalVisible(!modalVisible)}
+                        onPress={() => console.log('Mantener presionado para cancelar')}
+                    >
+                        <Text
+                            style={styles.btnCancelarTexto}
+                        >
+                            X Cancelar
+                        </Text>
+                    </Pressable>
+
                     <View style={styles.campo}>
                         <Text style={styles.label}>Nombre Mascota</Text>
                         <TextInput
                             style={styles.input}
                             placeholder='Nombre Mascota'
                             placeholderTextColor={'#666'}
-                            value={paciente}
-                            onChangeText={setPaciente}
+                            value={mascota}
+                            onChangeText={setMascota}
                         />
                     </View>
 
@@ -90,14 +144,14 @@ const Formulario = ({ modalVisible }: { modalVisible: boolean }) => {
                                 date={fecha}
                                 locale='es'
                                 mode='date'
-                                onDateChange={(date) => setFecha(date)}                                
+                                onDateChange={(date) => setFecha(date)}
                             />
                         </View>
                     </View>
 
                     <View style={styles.campo}>
                         <Text style={styles.label}>Síntomas</Text>
-                        <TextInput                            
+                        <TextInput
                             style={[styles.input, styles.sintomasInput]}
                             placeholder='Describa Algunos Síntomas de la Mascota'
                             placeholderTextColor={'#666'}
@@ -108,6 +162,16 @@ const Formulario = ({ modalVisible }: { modalVisible: boolean }) => {
                         />
                     </View>
 
+                    <Pressable
+                        style={styles.btnNuevaCita}
+                        onPress={handleCita}
+                    >
+                        <Text
+                            style={styles.btnNuevaCitaTexto}
+                        >
+                            + Agregar Mascota
+                        </Text>
+                    </Pressable>
                 </ScrollView>
             </SafeAreaView>
         </Modal>
@@ -128,6 +192,22 @@ const styles = StyleSheet.create({
     },
     tituloBold: {
         fontWeight: '900'
+    },
+    btnCancelar: {
+        backgroundColor: '#5827A4',
+        marginVertical: 30,
+        marginHorizontal: 30,
+        padding: 15,
+        borderRadius: 10
+        // borderWidth: 1,
+        // borderColor: '#FFF'
+    },
+    btnCancelarTexto: {
+        color: '#FFF',
+        textAlign: 'center',
+        fontWeight: '900',
+        fontSize: 16,
+        textTransform: 'uppercase'
     },
     campo: {
         marginVertical: 5,
@@ -151,6 +231,20 @@ const styles = StyleSheet.create({
     contenedorFecha: {
         backgroundColor: '#FFF',
         borderRadius: 10
+    },
+    btnNuevaCita: {
+        marginVertical: 50,
+        backgroundColor: '#F59E0B',
+        paddingVertical: 15,
+        marginHorizontal: 30,
+        borderRadius: 10
+    },
+    btnNuevaCitaTexto: {
+        textAlign: 'center',
+        color: '#5827A4',
+        textTransform: 'uppercase',
+        fontWeight: '700',
+        fontSize: 16
     }
 })
 

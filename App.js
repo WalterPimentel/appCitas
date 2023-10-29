@@ -30,6 +30,7 @@ const App = () => {
 
   // Los Hooks se colocan en la parte superior, antes de toda función
   const [modalVisible, setModalVisible] = useState(false)
+  const [mascotas, setMascotas] = useState([])
 
   return (
     <SafeAreaView style={styles.contenedor}>
@@ -40,7 +41,7 @@ const App = () => {
 
       <Pressable
         style={styles.btnNuevaCita}
-        onPress={() => setModalVisible(true)}
+        onPress={() => setModalVisible(!modalVisible)}
       >
         <Text
           style={styles.btnTextoNuevaCita}
@@ -50,6 +51,9 @@ const App = () => {
       {/* Aqui llamamos al formulario desde import y creamos props para enviar variables o funciones*/}
       <Formulario
         modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        mascotas={mascotas}
+        setMascotas={setMascotas}
       />
     </SafeAreaView>
   );
